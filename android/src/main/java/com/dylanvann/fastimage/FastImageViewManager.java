@@ -83,6 +83,12 @@ class FastImageViewManager extends SimpleViewManager<FastImageViewWithUrl> imple
         view.setScaleType(scaleType);
     }
 
+    @ReactProp(name = "resizeImageAndroid")
+    public void setImageResize(FastImageViewWithUrl view, ReadableMap imageSizeOverride) {
+        // Re-run Glide with width and height override values set.
+        view.setImageSizeOverride(imageSizeOverride);
+    }
+
     @Override
     public void onDropViewInstance(@NonNull FastImageViewWithUrl view) {
         // This will cancel existing requests.

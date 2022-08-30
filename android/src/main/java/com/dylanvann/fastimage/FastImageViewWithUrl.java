@@ -30,6 +30,7 @@ class FastImageViewWithUrl extends AppCompatImageView {
     private boolean mNeedsReload = false;
     private ReadableMap mSource = null;
     private Drawable mDefaultSource = null;
+    private ReadableMap mImageSizeOverride = null;
 
     public GlideUrl glideUrl;
 
@@ -45,6 +46,11 @@ class FastImageViewWithUrl extends AppCompatImageView {
     public void setDefaultSource(@Nullable Drawable source) {
         mNeedsReload = true;
         mDefaultSource = source;
+    }
+
+    public void setImageSizeOverride(ReadableMap imageSizeOverride) {
+        mNeedsReload = true;
+        mImageSizeOverride = imageSizeOverride;
     }
 
     private boolean isNullOrEmpty(final String url) {
@@ -142,7 +148,9 @@ class FastImageViewWithUrl extends AppCompatImageView {
                             .apply(FastImageViewConverter
                                     .getOptions(context, imageSource, mSource)
                                     .placeholder(mDefaultSource) // show until loaded
-                                    .fallback(mDefaultSource)); // null will not be treated as error
+                                    .fallback(mDefaultSource)) // null will not be treated as error
+                            .apply(FastImageViewConverter
+                                    .getImageResizeOptions(mImageSizeOverride));
 
             if (key != null)
                 builder.listener(new FastImageRequestListener(key));
